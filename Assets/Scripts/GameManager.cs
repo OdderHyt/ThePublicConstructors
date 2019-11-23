@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
 	[Header("Background objects settings")]
 	[SerializeField] [Range(0f, 25f)] private float maxTime = 5f;
 	[SerializeField] private List<GameObject> backgroundObjects;
-	[SerializeField] private float backgroundObjectSpeed = 1;
+	[SerializeField] [Range(0f, 25f)] private float backgroundObjectSpeed = 1;
 
 	[Header("Player magnet settings")]
 	[SerializeField] [Range(0f, 25f)] private float maxPlayerToPlayerDistance = 5f;
@@ -50,7 +50,12 @@ public class GameManager : MonoBehaviour {
 		if (time <= 0) {
 			time = Random.Range(0f, maxTime);
 
-			Instantiate(backgroundObjects.ElementAt(Random.Range(0, backgroundObjects.Count-1)), new Vector3(Random.Range(-96, 96), -1000, Random.Range(100, 1000)), Quaternion.identity);
+			float spreadZ = Random.Range(250, 750);
+			float spreadY = spreadZ / Mathf.Sin(CameraController.instance.camera.fieldOfView / 2);
+			float spreadX = spreadY * Random.Range(-1f, 1f); 
+			
+
+			Instantiate(backgroundObjects.ElementAt(Random.Range(0, backgroundObjects.Count-1)), new Vector3(spreadX, spreadY, spreadZ), Quaternion.identity);
 		}
 
 

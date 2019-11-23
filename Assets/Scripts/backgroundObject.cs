@@ -7,7 +7,7 @@ public class backgroundObject : MonoBehaviour
 		speed = GameManager.instance.BackgroundObjectSpeed;
 	}
 	private void Update() {
-		if(transform.position.y > 1000) {
+		if(transform.position.y > -(transform.position.z / Mathf.Sin(CameraController.instance.camera.fieldOfView / 2))) {
 			Destroy(gameObject);
 		}
 	}
