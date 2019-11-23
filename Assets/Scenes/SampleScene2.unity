@@ -324,9 +324,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 645643579}
   playerNumber: 2
-  horizontalSpeed: 20
+  horizontalSpeed: 400
   upSpeed: 5
   downSpeed: 14
+  punchSpeed: 3000
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,6 +755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 1432599977}
   playerNumber: 1
-  horizontalSpeed: 20
+  horizontalSpeed: 400
   upSpeed: 5
   downSpeed: 14
+  punchSpeed: 3000
