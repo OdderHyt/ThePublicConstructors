@@ -13,9 +13,10 @@ public class GameManager : MonoBehaviour {
 	private float time = 0;
 
 	[Header("Background objects settings")]
-	[SerializeField] [Range(0f, 25f)] private float maxTime = 5f;
+	[SerializeField] [Range(0f, 25f)] private float maxTime = 5f, backgroundObjectSpeed = 1;
+	[SerializeField] [Range(100f, 1000f)] private float minDistance, maxDistance;
+
 	[SerializeField] private List<GameObject> backgroundObjects;
-	[SerializeField] [Range(0f, 25f)] private float backgroundObjectSpeed = 1;
 
 	[Header("Player magnet settings")]
 	[SerializeField] [Range(0f, 25f)] private float maxPlayerToPlayerDistance = 5f;
@@ -50,15 +51,13 @@ public class GameManager : MonoBehaviour {
 		if (time <= 0) {
 			time = Random.Range(0f, maxTime);
 
-			float spreadZ = Random.Range(250, 750);
-			float spreadY = spreadZ / Mathf.Sin(CameraController.instance.camera.fieldOfView / 2);
-			float spreadX = spreadY * Random.Range(-1f, 1f); 
-			
+			float spreadZ = Random.Range(minDistance, maxDistance);
+			float spreadX = spreadZ / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.vFOV / 2));
+			float spreadY = spreadZ / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.hFOV / 2));
 
-			Instantiate(backgroundObjects.ElementAt(Random.Range(0, backgroundObjects.Count-1)), new Vector3(spreadX, spreadY, spreadZ), Quaternion.identity);
+
+			Instantiate(backgroundObjects.ElementAt(Random.Range(0, backgroundObjects.Count)), new Vector3(Random.Range(-spreadX, spreadX), -spreadY, spreadZ), Quaternion.identity);
 		}
-
-
 	}
 
 	private void OnDrawGizmos() {
