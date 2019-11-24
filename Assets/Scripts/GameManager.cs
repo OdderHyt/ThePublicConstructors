@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour {
 	public float BackgroundObjectSpeed { get => backgroundObjectSpeed; }
 	private bool roundEnd;
 
+	private PlayerController winner;
+
 	[SerializeField] public List<GameObject> levelObjects = new List<GameObject>();
-	[SerializeField] public GameObject parachute, parachuteInPlay, player;
+	[SerializeField] public GameObject parachute, parachuteInPlay, player, bottom;
 
 	private float spawnTime = 0;
 
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour {
 			Destroy(this);
 		}
 
-
+		PlayerController.playerID = 1;
 		for(int i = 0; i < Input.GetJoystickNames().Length; i++) {
 			GameObject newPlayer = Instantiate(player, new Vector3(Random.Range(-90, 90), 50, 0), Quaternion.identity);
 			newPlayer.name = "player " + PlayerController.playerID;
@@ -81,15 +83,22 @@ public class GameManager : MonoBehaviour {
 
 		if(roundEnd) {
 
-			countDownTimer.SetText(levelObjects.Find(x => x.GetComponent<PlayerController>().parachute.activeSelf == true).name + " won!\nnew game in: " + ((int)roundTime).ToString());
+			countDownTimer.SetText(winner.name + " won!\nnew game in: " + ((int)roundTime).ToString());
 			if(roundTime < 0) {
 				SceneManager.LoadScene(0);
 			}
 		} else {
 			countDownTimer.SetText(((int)roundTime).ToString());
-			if(roundTime < 0) {
+			if(roundTime <= 0 && ParachuteController.instance == null) { //levelObjects.FindIndex(p => p.GetComponent<PlayerController>().parachute.activeSelf == true) >= 0
+				winner = levelObjects.Find(x => x.GetComponent<PlayerController>().parachute.activeSelf == true).GetComponent<PlayerController>();
 				roundTime = 15;
 				roundEnd = true;
+				foreach(var item in levelObjects) {
+					item.GetComponent<Rigidbody>().useGravity = true;
+				}
+				winner.rb.useGravity = false;
+				winner.openParachute.SetActive(true);
+				bottom.SetActive(false);
 			}
 		}
 	}

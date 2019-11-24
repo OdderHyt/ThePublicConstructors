@@ -7,12 +7,12 @@ public class PlayerController : MonoBehaviour {
 	private string hAxis, vAxis, launch;
 	private bool onCooldown = false;
 	private Vector2 joystickVector, joystickVectorSquare;
-	private float launchSpeed = 20;
+	private float launchSpeed = 33;
 
-	[SerializeField] private Rigidbody rb;
+	[SerializeField] public Rigidbody rb;
 	public static int playerID = 1;
 	[SerializeField] public Material[] mats;
-	[SerializeField] public GameObject indicator, parachute, IDLE;
+	[SerializeField] public GameObject indicator, parachute, IDLE, openParachute;
 	[SerializeField] private float cooldown, cooldownMax = 2f;
 
 	void Start() {
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate() {
 		if(Input.GetButtonDown(launch) && !onCooldown) {
-			rb.AddForce(new Vector2(joystickVector.x, joystickVector.y) * launchSpeed, ForceMode.Impulse);
+			rb.AddForce(new Vector2(joystickVector.x, joystickVector.y) * launchSpeed * (parachute.activeSelf ? 0.75f : 1f), ForceMode.Impulse);
 			onCooldown = true;
 		} else if(!Input.GetButton(launch)) {
 			cooldown -= Time.deltaTime;

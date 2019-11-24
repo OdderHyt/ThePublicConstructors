@@ -173,7 +173,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21135490}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -295,7 +295,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180642352}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -563,12 +563,13 @@ MonoBehaviour:
     type: 3}
   parachuteInPlay: {fileID: 0}
   player: {fileID: 4389030652972081852, guid: 81aea59521ce3494e99fcf6659d79fc0, type: 3}
+  bottom: {fileID: 1579230226}
   countDownTimer: {fileID: 1350633401}
   spawnTimeMax: 5
   backgroundObjectSpeed: 5
   minDistance: 250
   maxDistance: 750
-  roundTime: 60
+  roundTime: 5
   backgroundObjects:
   - {fileID: 6487365048270852199, guid: a60d326ed51cb174b819b7c68d51807d, type: 3}
   maxPlayerToPlayerDistance: 25
@@ -1015,7 +1016,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579230226}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1145,7 +1146,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826248514}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
