@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour {
 
 		vFOV = camera.fieldOfView;
 		hFOV = Mathf.Rad2Deg * (2 * Mathf.Atan(Mathf.Tan((vFOV * Mathf.Deg2Rad) / 2) * camera.aspect));
+
 	}
 
 	private void FixedUpdate() {

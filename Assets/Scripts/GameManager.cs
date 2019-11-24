@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
 	private bool roundEnd;
 
 	[SerializeField] public List<GameObject> levelObjects = new List<GameObject>();
+	[SerializeField] public GameObject parachute, parachuteInPlay, player;
 
 	private float spawnTime = 0;
 
@@ -33,6 +34,16 @@ public class GameManager : MonoBehaviour {
 		} else {
 			Destroy(this);
 		}
+
+
+		for(int i = 0; i < Input.GetJoystickNames().Length; i++) {
+			GameObject newPlayer = Instantiate(player, new Vector3(Random.Range(-90, 90), 50, 0), Quaternion.identity);
+			newPlayer.name = "player " + PlayerController.playerID;
+			levelObjects.Add(newPlayer);
+		}
+
+		parachuteInPlay = Instantiate(parachute, Vector3.zero, Quaternion.identity);
+		levelObjects.Add(parachuteInPlay);
 	}
 
 	private void FixedUpdate() {
@@ -69,7 +80,8 @@ public class GameManager : MonoBehaviour {
 		roundTime -= Time.deltaTime;
 
 		if(roundEnd) {
-			countDownTimer.SetText("Player 2 won!\nnew game in: " + ((int)roundTime).ToString());
+
+			countDownTimer.SetText(levelObjects.Find(x => x.GetComponent<PlayerController>().parachute.activeSelf == true).name + " won!\nnew game in: " + ((int)roundTime).ToString());
 			if(roundTime < 0) {
 				SceneManager.LoadScene(0);
 			}
@@ -81,10 +93,18 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 	}
-
-	private void OnDrawGizmos() {
-		Gizmos.DrawSphere(playerCenter, 1);
+	public bool dropParachute(GameObject pc, Rigidbody rb) {
+		parachuteInPlay = Instantiate(parachute, pc.transform.position, pc.transform.rotation);
+		parachuteInPlay.GetComponent<Rigidbody>().velocity = rb.velocity;
+		parachuteInPlay.GetComponent<Rigidbody>().angularVelocity = rb.angularVelocity;
+		levelObjects.Add(parachuteInPlay);
+		return false;
 	}
-
+	public bool pickUpParachute() {
+		levelObjects.Remove(parachuteInPlay);
+		Destroy(parachuteInPlay);
+		ParachuteController.instance = null;
+		return true;
+	}
 }
 
