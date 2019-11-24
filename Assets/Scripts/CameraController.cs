@@ -12,9 +12,7 @@ public class CameraController : MonoBehaviour {
 
 
 	[SerializeField] [Range(0f, 1f)] private float speedz = 1f, speedxy = 0.5f;
-	[SerializeField] [Range(0f, 25f)] private float minimum = 10f;
-
-	float a, b;
+	[SerializeField] [Range(0f, 25f)] private float minZoom = 10f, minEdge = 25f;
 
 	private void Awake() {
 		if(instance == null) {
@@ -25,30 +23,20 @@ public class CameraController : MonoBehaviour {
 		camera = gameObject.GetComponent<Camera>();
 		transform.position = Vector3.zero;
 
-		float vFOV = camera.fieldOfView;
-		float radAngle = vFOV * Mathf.Deg2Rad;
-		float radHFOV = 2 * Mathf.Atan(Mathf.Tan(radAngle / 2) * camera.aspect);
-		float hFOV = Mathf.Rad2Deg * radHFOV;
+		vFOV = camera.fieldOfView;
+		hFOV = Mathf.Rad2Deg * (2 * Mathf.Atan(Mathf.Tan((vFOV * Mathf.Deg2Rad) / 2) * camera.aspect));
 	}
-
-	private void Update() {
-
-	}
-
-	//(player to center)*tan(180-vFOV-30) 
 
 	private void FixedUpdate() {
+		float x = GameManager.instance.players.OrderBy(i => i.transform.position.magnitude).First().transform.position.x;
+		float y = GameManager.instance.players.OrderBy(i => i.transform.position.magnitude).First().transform.position.y;
 
-		a = (GameManager.instance.playerCenter.x - GameManager.instance.players.First().transform.position.x) * Mathf.Tan((180 - (CameraController.instance.hFOV / 2) - 90) * Mathf.Deg2Rad);
-		b = (GameManager.instance.playerCenter.y - GameManager.instance.players.First().transform.position.y) * Mathf.Tan((180 - (CameraController.instance.vFOV / 2) - 90) * Mathf.Deg2Rad);
+		float a = ((Mathf.Abs(GameManager.instance.playerCenter.x - x) + minEdge) / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.hFOV / 2)));
+		float b = ((Mathf.Abs(GameManager.instance.playerCenter.y - y) + minEdge) / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.vFOV / 2)));
 
 		transform.position = new Vector3(
 		Mathf.Lerp(transform.position.x, GameManager.instance.playerCenter.x, speedxy),
 		Mathf.Lerp(transform.position.y, GameManager.instance.playerCenter.y, speedxy),
-		Mathf.Lerp(transform.position.z, -Mathf.Max(a, b, minimum), speedz));
-	}
-
-	private void OnDrawGizmos() {
-		Gizmos.DrawSphere(new Vector3(GameManager.instance.playerCenter.x, GameManager.instance.playerCenter.y, -Mathf.Max(a, b, minimum)), 0.5f);
+		Mathf.Lerp(transform.position.z, -Mathf.Max(a, b, minZoom), speedz));
 	}
 }

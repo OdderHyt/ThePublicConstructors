@@ -5438,7 +5438,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedz: 0.1
   speedxy: 0.1
-  minimum: 10
+  minZoom: 15
+  minEdge: 10
 --- !u!1001 &1317219897
 PrefabInstance:
   m_ObjectHideFlags: 0
