@@ -21,18 +21,20 @@ public class CameraController : MonoBehaviour {
 			Destroy(this);
 		}
 		camera = gameObject.GetComponent<Camera>();
-		transform.position = Vector3.zero;
+		transform.position = -Vector3.forward * minZoom;
 
 		vFOV = camera.fieldOfView;
 		hFOV = Mathf.Rad2Deg * (2 * Mathf.Atan(Mathf.Tan((vFOV * Mathf.Deg2Rad) / 2) * camera.aspect));
 	}
 
 	private void FixedUpdate() {
-		float x = GameManager.instance.players.OrderBy(i => i.transform.position.magnitude).First().transform.position.x;
-		float y = GameManager.instance.players.OrderBy(i => i.transform.position.magnitude).First().transform.position.y;
+		Transform objectTransform = GameManager.instance.levelObjects.OrderBy(i => (i.transform.position - GameManager.instance.playerCenter).magnitude).Last().transform;
 
-		float a = ((Mathf.Abs(GameManager.instance.playerCenter.x - x) + minEdge) / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.hFOV / 2)));
-		float b = ((Mathf.Abs(GameManager.instance.playerCenter.y - y) + minEdge) / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.vFOV / 2)));
+		float x = objectTransform.position.x;
+		float y = objectTransform.position.y;
+
+		float a = (Mathf.Abs(GameManager.instance.playerCenter.x - x) + minEdge) / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.hFOV / 2));
+		float b = (Mathf.Abs(GameManager.instance.playerCenter.y - y) + minEdge) / Mathf.Tan(Mathf.Deg2Rad * (CameraController.instance.vFOV / 2));
 
 		transform.position = new Vector3(
 		Mathf.Lerp(transform.position.x, GameManager.instance.playerCenter.x, speedxy),

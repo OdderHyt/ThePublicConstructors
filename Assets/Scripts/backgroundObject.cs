@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-public class backgroundObject : MonoBehaviour
-{
+public class backgroundObject : MonoBehaviour {
 	private float speed = 1;
 	private void Awake() {
 		speed = GameManager.instance.BackgroundObjectSpeed;
@@ -11,8 +10,7 @@ public class backgroundObject : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-	void FixedUpdate()
-    {
+	void FixedUpdate() {
 		transform.position = transform.position + Vector3.up * speed;
-    }
+	}
 }
